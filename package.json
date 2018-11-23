@@ -1,7 +1,7 @@
 {
-  "name": "oktob-backend",
+  "name": "backend-api",
   "version": "0.3.0",
-  "description": "Backend API for Oktob Blog Tutorial",
+  "description": "Backend API for 304CEM CW",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,11 +17,12 @@
     "randomstring": "^1.1.5"
   },
   "keywords": [
-    "Oktob",
+    "Piotr Orlowski",
+    "304CEM",
+    "CW",
     "node.js",
-    "API",
-    "tutorial"
+    "API"
   ],
-  "author": "Mahmoud Awad",
+  "author": "Piotr Orlowski",
   "license": "MIT"
 }
