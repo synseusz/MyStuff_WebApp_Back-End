@@ -10,7 +10,7 @@ exports.add = function(conData, userData, callback){
 	//if pass validation connect to DB
 	db.connect(conData, (err, conn) => {
 
-		//when done check for any error
+		//when done check for error
 		if (err) {
 			console.log('error in connecting to db:' + err)
 			callback(err)

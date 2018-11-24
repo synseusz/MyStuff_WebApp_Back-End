@@ -1,7 +1,7 @@
 {
-  "name": "oktob-backend",
+  "name": "304cem-cw-backend-api",
   "version": "0.3.0",
-  "description": "Backend API for Oktob Blog Tutorial",
+  "description": "Backend API for 304CEM Assignment",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,19 +9,17 @@
     "lint": "node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
+    "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "eslint": "^5.9.0",
     "express": "^4.16.4",
-    "mysql": "^2.16.0",
-    "randomstring": "^1.1.5"
+    "mysql": "^2.16.0"
   },
   "keywords": [
-    "Oktob",
     "node.js",
-    "API",
-    "tutorial"
+    "API"
   ],
-  "author": "Mahmoud Awad",
+  "author": "Piotr Orlowski",
   "license": "MIT"
 }

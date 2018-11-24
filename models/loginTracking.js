@@ -12,8 +12,8 @@ exports.add = function(conData, req, callback){
             callback(err);
             return;
         }	
-        //otherwise we can now connect to the db to add the login activity by that user
-        db.connect(conData, function(err, data){
+        //otherwise we can now connect to the db 
+        db.connect(conData, function(err, conn){
 		
             //when done check for any error
             if (err) {
@@ -25,8 +25,8 @@ exports.add = function(conData, req, callback){
                 userId : data.id,
                 dateAndTime: new Date()
             }
-            //perform the query
-            data.query('INSERT INTO logins SET ?', loginTrackData, function (err, result) {
+            //perform the query to add loginTrackData
+            conn.query('INSERT INTO logintrack SET ?', loginTrackData, function (err, result) {
                 
                 if (err) {
                     callback(err);

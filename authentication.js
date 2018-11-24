@@ -1,11 +1,12 @@
 'use strict'
-// we will need our database module
+
 const db = require('./database');
+const auth = require('basic-auth')
 
 exports.userLogin = (conData, request, callback) => {
 	
-	//first I will check if I ve got basic authorization
-	if (request.authorization === undefined || request.authorization.basic === undefined){
+	//first check if basic authorization is present
+	if (!request.headers.authorization || request.headers.authorization.indexOf('Basic') === -1){
 		//throw new Error('authorization header missing')
 		let err = {message:'authorization header missing'};
 		console.log("Error:" + err.message);
@@ -13,29 +14,29 @@ exports.userLogin = (conData, request, callback) => {
 		return;
 	}
 		
-	const auth = request.authorization.basic
+	const userData = auth(request);
 
-	//extracting username and password from the auth
-	if (auth.username === undefined || auth.password === undefined){
-		//throw new Error('missing username and/or password')
+	//if no userData
+	if (!userData){
+		//throw new Error('missing email and/or password')
 		let err = {message:'missing username and/or password'};
 		console.log("Error:" + err.message);
 		callback(err);
 		return;
 	}
 	
-	//connecting to the database
+	//connect to the database to check if such email and passwd exists
 	db.connect(conData, function(err, data){
 		
-		//Checking if there are any errors
+		//when done check for any error
 		if (err) {
 			console.log("error in connecting to db")
 			callback(err);
 			return;
 		}	
 		
-		//###~ QUERY ~###
-		data.query('SELECT id FROM users WHERE username="' + auth.username + '" AND password="' + auth.password + '"', function (err, result) {
+		//####~Query~#####
+		data.query('SELECT id FROM users WHERE email="' + userData.name + '" AND password="' + userData.pass + '"', function (err, result) {
 			
 			if(err){
 				console.log("error in executing the query")
@@ -45,11 +46,10 @@ exports.userLogin = (conData, request, callback) => {
 			
 			//return control to the calling module
 			//return null for error with data indicating successful login
-			//return an error data with login false and null for data
-            if(result && result.length > 0)
-				callback(null, {userId:result.id, login:true});
-            else
-                console.log("Account doesn't exist")
+			//return an error data with login false
+			if(result && result.length > 0)
+				callback(null, {userId:1234, login:true});
+			else
 				callback({login:false});
 		});
 	});
