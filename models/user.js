@@ -20,7 +20,7 @@ exports.add = function(conData, userData, callback){
 		//TODO server validation
 
 
-		//perform the query
+		//###~ QUERY ~###
 		conn.query('INSERT INTO users SET ?', userData, (err, result) => {
 			//return control to the calling module
 			callback(err, result)
