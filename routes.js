@@ -9,7 +9,7 @@ const login = require('./models/loginTracking')
 /* eslint-disable no-magic-numbers */
 
 //Function for all routes
-exports.allRoutes = function (databaseData, server) {
+exports.allRoutes = function(databaseData, server) {
 
 	//~~User Routes~~
 	server.post('/api/v1.0/users', (req, res) => {
@@ -42,7 +42,7 @@ exports.allRoutes = function (databaseData, server) {
 	server.post('/api/v1.0/login', (req, res) => {
 
 		//we are atempting to add a new login activity
-		login.add(databaseData, req, function (err, data) {
+		login.add(databaseData, req, (err, data) => {
 
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'POST')
@@ -53,22 +53,21 @@ exports.allRoutes = function (databaseData, server) {
 					//if error object has got login field that means the error is
 					//un-authenticated username and password
 					//so we need to send proper response code for this error
-					res.status(401);
-					res.end(JSON.stringify({ message: "wrong username or password" }));
-				}
-				else {
+					res.status(401)
+					res.end(JSON.stringify({ message: 'wrong username or password' }))
+				} else {
 					//otherwise another type of errors has occured
-					res.status(400);
-					res.end("error:" + err);
+					res.status(400)
+					res.end('error:' + err)
 				}
 
-				return;
+				return
 			}
 
-			//if no errors at all then let's set proper response code 
-			res.status(201);
-			res.end(JSON.stringify(data));
-		});
+			//if no errors at all then let's set proper response code
+			res.status(201)
+			res.end(JSON.stringify(data))
+		})
 	})
 
 	//~~Database Routes~~

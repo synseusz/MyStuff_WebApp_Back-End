@@ -1,42 +1,42 @@
 'use strict'
 
-const db = require('../database');
-const authentication = require('../authentication');
+const db = require('../database')
+const authentication = require('../authentication')
 
 exports.add = function(conData, req, callback){
-    
-    authentication.userLogin(conData, req, (err, data) => {
 
-        //if an error occured return to the calling module
-        if (err) {
-            callback(err);
-            return;
-        }	
-        //otherwise we can now connect to the db 
-        db.connect(conData, function(err, conn){
-		
-            //when done check for any error
-            if (err) {
-                callback(err);
-                return;
-            }	
-            
-            let loginTrackData = {
-                userId : data.id,
-                dateAndTime: new Date()
-            }
-            //perform the query to add loginTrackData
-            conn.query('INSERT INTO logintrack SET ?', loginTrackData, function (err, result) {
-                
-                if (err) {
-                    callback(err);
-                    return;
-                }	
-                //return control to the calling module
-                callback(err, result);
-            });
-        });
+	authentication.userLogin(conData, req, (err, data) => {
 
-    });
-	
-};
+		//if an error occured return to the calling module
+		if (err) {
+			callback(err)
+			return
+		}
+		//otherwise we can now connect to the db
+		db.connect(conData, (err, conn) => {
+
+			//when done check for any error
+			if (err) {
+				callback(err)
+				return
+			}
+
+			const loginTrackData = {
+				userId: data.id,
+				dateAndTime: new Date()
+			}
+			//perform the query to add loginTrackData
+			conn.query('INSERT INTO logintrack SET ?', loginTrackData, (err, result) => {
+
+				if (err) {
+					callback(err)
+					return
+				}
+				//return control to the calling module
+				callback(err, result)
+			})
+		})
+
+	})
+
+}
