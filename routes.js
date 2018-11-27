@@ -44,6 +44,7 @@ exports.allRoutes = function(databaseData, server) {
 		//we are atempting to add a new login activity
 		login.add(databaseData, req, (err, data) => {
 
+			res.setHeader('Access-Origin-Allow-Headers', ['Authorization'])
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'POST')
 
