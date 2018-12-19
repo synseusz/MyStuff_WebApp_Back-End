@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "name": "backend-api",
   "version": "0.3.0",
   "description": "Backend API for 304CEM CW",
+=======
+  "name": "304cem-cw-backend-api",
+  "version": "0.3.0",
+  "description": "Backend API for 304CEM Assignment",
+>>>>>>> feature/loginAndAuthentication
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,17 +15,21 @@
     "lint": "node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
+    "basic-auth": "^2.0.1",
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "eslint": "^5.9.0",
     "express": "^4.16.4",
-    "mysql": "^2.16.0",
-    "randomstring": "^1.1.5"
+    "mysql": "^2.16.0"
   },
   "keywords": [
+<<<<<<< HEAD
     "Piotr Orlowski",
     "304CEM",
     "CW",
+=======
+>>>>>>> feature/loginAndAuthentication
     "node.js",
     "API"
   ],

@@ -31,7 +31,7 @@ const databaseData = {
 	database: 'database'
 }
 //save server port on global variable
-let port = 8080
+const port = 8080
 
 //----- add all routes to the api end points ------
 routes.allRoutes(databaseData, server)
