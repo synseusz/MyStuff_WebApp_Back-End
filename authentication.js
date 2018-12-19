@@ -2,13 +2,14 @@
 
 const db = require('./database')
 const auth = require('basic-auth')
+const bcrypt = require('bcrypt')
 
 exports.userLogin = (conData, request, callback) => {
 
 	//first check if basic authorization is present
-	if (!request.headers.authorization || request.headers.authorization.indexOf('Basic') === -1){
+	if (!request.headers.authorization || request.headers.authorization.indexOf('Basic') === -1) {
 		//throw new Error('authorization header missing')
-		const err = {message: 'authorization header missing'}
+		const err = { message: 'authorization header missing' }
 		console.log('Error:' + err.message)
 		callback(err)
 		return
@@ -17,9 +18,9 @@ exports.userLogin = (conData, request, callback) => {
 	const userData = auth(request)
 
 	//if no userData
-	if (!userData){
+	if (!userData) {
 		//throw new Error('missing email and/or password')
-		const err = {message: 'missing username and/or password'}
+		const err = { message: 'missing username and/or password' }
 		console.log('Error:' + err.message)
 		callback(err)
 		return
@@ -36,21 +37,30 @@ exports.userLogin = (conData, request, callback) => {
 		}
 
 		//####~Query~#####
-		data.query('SELECT id FROM users WHERE email="' + userData.name + '" AND password="' + userData.pass + '"', (err, result) => {
-
-			if(err){
-				console.log('error in executing the query')
+		data.query('SELECT password FROM users WHERE email=?', userData.name, (err, response) => {
+			if (err) {
 				callback(err)
 				return
 			}
+			
+			else {
+				const valid = bcrypt.compareSync(userData.pass, response[0].password)
+				if (valid) {
+					data.query('SELECT id FROM users WHERE email=?', userData.name, (err, result) => {
+					if (err) {
+						console.log('error in executing the query')
+						callback(err)
+						return
+					}
 
-			//return control to the calling module
-			//return null for error with data indicating successful login
-			//return an error data with login false
-			if(result && result.length > 0)
-				callback(null, {userId: 1234, login: true})
-			else
-				callback({login: false})
+					if (result && result.length > 0)
+						callback(null, { userId: result[0].id, login: true })
+	
+				})
+				}
+				else
+					callback({ login: false })
+			}
 		})
 	})
 }

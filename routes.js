@@ -9,7 +9,7 @@ const login = require('./models/loginTracking')
 /* eslint-disable no-magic-numbers */
 
 //Function for all routes
-exports.allRoutes = function(databaseData, server) {
+exports.allRoutes = function (databaseData, server) {
 
 	//~~User Routes~~
 	server.post('/api/v1.0/users', (req, res) => {
@@ -20,22 +20,31 @@ exports.allRoutes = function(databaseData, server) {
 			password: req.body['password'],
 			registrationDate: new Date()
 		}
-		//we are atempting to add a user
-		user.add(databaseData, userData, (err) => {
-
-			res.setHeader('content-type', 'application/json')
-			res.setHeader('accepts', 'GET, POST')
-			//when adding a user is done, this code will run
-			//if we got an error informs the client and set the proper response code
+		user.uniqueValidator(databaseData, userData.email, (err) => {
 			if (err) {
 				res.status(400)
-				res.end('error:' + err)
+				res.end(err.toString())
 				return
 			}
-			//if no error let's set proper response code and have a party
-			res.status(201)
-			res.end(JSON.stringify({ message: 'user added successfully' }))
+			else {
+				user.add(databaseData, userData, (err) => {
+
+					res.setHeader('content-type', 'application/json')
+					res.setHeader('accepts', 'GET, POST')
+					//when adding a user is done, this code will run
+					//if we got an error informs the client and set the proper response code
+					if (err) {
+						res.status(400)
+						res.end('error:' + err)
+						return
+					}
+					//if no error let's set proper response code and have a party
+					res.status(201)
+					res.end(JSON.stringify({ message: 'user added successfully' }))
+				})
+			}
 		})
+
 	})
 
 	//####~~~ Log In Route ~~####

@@ -27,7 +27,7 @@ exports.createTables = function(conData, callback){
 	})
 
 	let sql = 'CREATE TABLE Users (id INT NOT NULL AUTO_INCREMENT, email VARCHAR(32),'
-	sql += 'password VARCHAR(16), registrationDate DATETIME, PRIMARY KEY (id));'
+	sql += 'password VARCHAR(100), registrationDate DATETIME, PRIMARY KEY (id));'
 
 	sql += 'CREATE TABLE LoginTrack (id INT NOT NULL AUTO_INCREMENT, userId INT, dateAndTime DATETIME, PRIMARY KEY (id) )'
 

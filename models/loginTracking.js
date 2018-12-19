@@ -22,7 +22,7 @@ exports.add = function(conData, req, callback){
 			}
 
 			const loginTrackData = {
-				userId: data.id,
+				userId: data.userId,
 				dateAndTime: new Date()
 			}
 			//perform the query to add loginTrackData
