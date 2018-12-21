@@ -42,21 +42,22 @@ exports.userLogin = (conData, request, callback) => {
 				callback(err)
 				return
 			}
-			
+			else if (response.length === 0) {
+				callback(new Error("authorization failed"))
+			}
+
 			else {
 				const valid = bcrypt.compareSync(userData.pass, response[0].password)
 				if (valid) {
 					data.query('SELECT id FROM users WHERE email=?', userData.name, (err, result) => {
-					if (err) {
-						console.log('error in executing the query')
-						callback(err)
-						return
-					}
-
-					if (result && result.length > 0)
-						callback(null, { userId: result[0].id, login: true })
-	
-				})
+						if (err) {
+							console.log('error in executing the query')
+							callback(err)
+							return
+						}
+						if (result && result.length > 0)
+							callback(null, { userId: result[0].id, login: true })
+					})
 				}
 				else
 					callback({ login: false })

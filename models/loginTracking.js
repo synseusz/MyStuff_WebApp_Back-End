@@ -6,12 +6,12 @@ const authentication = require('../authentication')
 exports.add = function(conData, req, callback){
 
 	authentication.userLogin(conData, req, (err, data) => {
-
 		//if an error occured return to the calling module
 		if (err) {
 			callback(err)
 			return
 		}
+
 		//otherwise we can now connect to the db
 		db.connect(conData, (err, conn) => {
 

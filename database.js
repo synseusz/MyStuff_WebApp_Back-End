@@ -26,10 +26,11 @@ exports.createTables = function(conData, callback){
 		  database: conData.database
 	})
 
-	let sql = 'CREATE TABLE Users (id INT NOT NULL AUTO_INCREMENT, email VARCHAR(32),'
+	let sql = 'CREATE TABLE IF NOT EXISTS Users (id INT NOT NULL AUTO_INCREMENT, email VARCHAR(32),'
 	sql += 'password VARCHAR(100), registrationDate DATETIME, PRIMARY KEY (id));'
 
-	sql += 'CREATE TABLE LoginTrack (id INT NOT NULL AUTO_INCREMENT, userId INT, dateAndTime DATETIME, PRIMARY KEY (id) )'
+	sql += 'CREATE TABLE IF NOT EXISTS LoginTrack (id INT NOT NULL AUTO_INCREMENT, userId INT, dateAndTime DATETIME, PRIMARY KEY (id) );'
+
 
 
 	con.query(sql, (err, result) => {
