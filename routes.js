@@ -5,6 +5,7 @@ const user = require('./models/user')
 const db = require('./database')
 //import loginTracking model with login auth
 const login = require('./models/loginTracking')
+const advert = require('./models/advert')
 
 /* eslint-disable no-magic-numbers */
 
@@ -91,6 +92,35 @@ exports.allRoutes = function (databaseData, server) {
 			}
 			res.status(200)
 			res.end('tables were created successfully')
+		})
+	})
+
+	// Advert route
+	server.post('/api/v1.0/adverts', (req, res) => {
+
+		const advertData = {
+			title: req.body['title'],
+			category: req.body['category'],
+			description: req.body['description'],
+			ItemCondition: req.body['ItemCondition'],
+			askingPrice: req.body['askingPrice'],
+			city: req.body['city'],
+			photo: req.body['photo']
+		}
+
+		advert.add(databaseData, advertData, (err) => {
+
+			res.setHeader('content-type', 'application/json')
+			res.setHeader('accepts', 'GET, POST')
+
+			if (err) {
+				res.status(400)
+				res.end('error:' + err)
+				return
+			}
+
+			res.status(201)
+			res.end(JSON.stringify({ message: 'advert added successfully' }))
 		})
 	})
 }
