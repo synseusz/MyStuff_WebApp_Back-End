@@ -31,6 +31,7 @@ exports.createTables = function(conData, callback){
 
 	sql += 'CREATE TABLE IF NOT EXISTS LoginTrack (id INT NOT NULL AUTO_INCREMENT, userId INT, dateAndTime DATETIME, PRIMARY KEY (id) );'
 	sql += 'CREATE TABLE IF NOT EXISTS Adverts (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(200), category VARCHAR(100), description LONGTEXT, ItemCondition VARCHAR(20), askingPrice INT, city VARCHAR(30), photo BLOB, PRIMARY KEY (id));'
+	sql += "CREATE TABLE IF NOT EXISTS Blogs (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(2048), authorId INT , body LONGTEXT, createdDate DATETIME, photo VARCHAR(2048), PRIMARY KEY (id) );";
 
 
 

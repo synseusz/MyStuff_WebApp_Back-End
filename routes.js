@@ -6,11 +6,58 @@ const db = require('./database')
 //import loginTracking model with login auth
 const login = require('./models/loginTracking')
 const advert = require('./models/advert')
+const blog = require('./models/blog');
+const dump = require('./dumpData');
+
 
 /* eslint-disable no-magic-numbers */
 
 //Function for all routes
 exports.allRoutes = function (databaseData, server) {
+
+	//------------blogs Routes-----------------
+    server.post('/api/v1.0/blogs', (req, res) => {
+        
+        let blogData = {
+			title: req.body['title'],
+			authorId: req.body['authorId'],
+			body: req.body['body'],
+			createdDate: new Date(),
+			photo: req.body['photo'] 
+        };
+        
+        blog.add(databaseData, blogData, function (err, result){
+            
+            if(err){
+                res.status(400);
+                res.end("error:" + err);
+                return;
+            }
+            
+            res.status(201);
+            res.end(JSON.stringify(result));
+        });
+    })
+	server.get('/api/v1.0/blogs', (req, res) => {
+        
+        //TODO: extract pagination and search parameters
+        let blogData = {
+
+        }
+        blog.getAll(databaseData, blogData, function (err, result){
+        
+            res.setHeader('content-type', 'application/json')
+            res.setHeader('accepts', 'GET')
+            
+            if(err){
+                res.status(400);
+                res.end("error:" + err);
+                return;
+            }
+            res.status(200);
+            res.end(JSON.stringify(result));
+        });
+    })
 
 	//~~User Routes~~
 	server.post('/api/v1.0/users', (req, res) => {
@@ -94,6 +141,16 @@ exports.allRoutes = function (databaseData, server) {
 			res.end('tables were created successfully')
 		})
 	})
+	server.post('/api/v1.0/admin/addDumpData', (req, res) => {
+
+
+        //dump some users and blogs data
+        dump.addBlogs(databaseData);
+
+        res.status(200);
+        res.end("dump data were added successfully");
+        
+    });
 
 	// Advert route
 	server.post('/api/v1.0/adverts', (req, res) => {
