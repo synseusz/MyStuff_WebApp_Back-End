@@ -1,18 +1,18 @@
 'use strict'
 
-const blog = require('./models/blog');
+const advert = require('./models/advert');
 
 //this package we need it to generate some random strings 
 const randomstring = require('randomstring');
 
 
-//----------------Add Random Blogs ----------------
+//----------------Add Random Adverts ----------------
 
-let blogData = [];
+let advertData = [];
 
-let addBlog = function(conData, blogData){
+let addAdvert = function(conData, advertData){
     
-    blog.add(conData, blogData, function (err, data){
+    advert.add(conData, advertData, function (err, data){
     
         if(err){
             console.log("the following error occured:" + err);
@@ -21,25 +21,34 @@ let addBlog = function(conData, blogData){
     });
 };
 
-exports.addBlogs = function(conData){
+exports.addAdverts = function(conData){
 
     for( let i = 0; i < 24; i++){
 
         let imgNum = (i % 9) + 1;
-        let tempBlog = {
+        //let tempAdvert = {
+            //title: randomParagraph(4, 8),
+            //authorId: Math.random() * (8 - 1) + 1,
+            //body: randomParagraph(100, 300),
+            //createdDate: new Date(),
+            //photo: 'http://localhost:8080/img/img' + imgNum + '.jpeg'
+        //};
+        let tempAdvert = {
             title: randomParagraph(4, 8),
-            authorId: Math.random() * (8 - 1) + 1,
-            body: randomParagraph(100, 300),
-            createdDate: new Date(),
-            photo: 'http://localhost:8080/img/img' + imgNum + '.jpeg'
-        };
+			category: "testCategory",
+			description: randomParagraph(100, 300),
+			ItemCondition: "testCondition",
+			askingPrice: 1234,
+			city: randomParagraph(4, 8),
+			photo: 'http://localhost:8080/img/img' + imgNum + '.jpeg'
+        }
 
-        blogData.push(tempBlog);
+        advertData.push(tempAdvert);
     }
     
-    blogData.forEach(async element => {
+    advertData.forEach(async element => {
 
-        addBlog(conData, element);
+        addAdvert(conData, element);
     });
 };
 
