@@ -18,6 +18,24 @@ exports.add = function(conData, advertData, callback){
 	});
 };
 
+exports.uniqueTitleValidator = (conData, title, callback) => {
+	db.connect(conData, (err, conn) => {
+		if (err) {
+			console.log('error in connecting to db:' + err)
+			callback(err)
+			return
+		}
+		conn.query('SELECT title FROM adverts', (err, result) => {
+			let n
+			for(n=0; n<result.length; n++){
+				if(result[n].title === title){
+					err = new Error('Advert with such title already exists in DB, try to pick another one')
+				}
+			}
+			callback(err, result)
+		})
+	})
+}
 
 exports.getAll = function(conData, advertData, callback){
 	

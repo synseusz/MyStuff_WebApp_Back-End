@@ -108,19 +108,28 @@ exports.allRoutes = function (databaseData, server) {
 			photo: 'http://localhost:8080/img/' + req.file.originalname
 		}
 
-		advert.add(databaseData, advertData, (err) => {
-
-			res.setHeader('content-type', 'application/json')
-			res.setHeader('accepts', 'GET, POST')
-
+		advert.uniqueTitleValidator(databaseData, advertData.title, (err) => {
 			if (err) {
 				res.status(400)
-				res.end('error:' + err)
+				res.end(err.toString())
 				return
 			}
+			else {
+				advert.add(databaseData, advertData, (err) => {
 
-			res.status(201)
-			res.end(JSON.stringify({ message: 'advert added successfully' }))
+					res.setHeader('content-type', 'application/json')
+					res.setHeader('accepts', 'GET, POST')
+
+					if (err) {
+						res.status(400)
+						res.end('error:' + err)
+						return
+					}
+
+					res.status(201)
+					res.end(JSON.stringify({ message: 'advert added successfully' }))
+				})
+			}
 		})
 	})
 
