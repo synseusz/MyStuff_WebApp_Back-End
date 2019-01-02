@@ -4,6 +4,7 @@ const user = require('./models/user')
 const db = require('./database')
 const login = require('./models/loginTracking')
 const advert = require('./models/advert')
+const message = require('./models/message')
 const dump = require('./dumpData');
 //package for parsing files, in this case images.
 const multer = require('multer')
@@ -97,8 +98,12 @@ exports.allRoutes = function (databaseData, server) {
 	//#						ADVERT ROUTES						#\\
 	//###########################################################\\
 	server.post('/api/v1.0/adverts', upload.single('photo'), (req, res) => {
+		if(req.file === undefined || !req.file){
+			console.log('Please upload a file')
+		}
 		console.log(req.file)
 		const advertData = {
+			author: req.body['author'],
 			title: req.body['title'],
 			category: req.body['category'],
 			description: req.body['description'],
@@ -151,6 +156,55 @@ exports.allRoutes = function (databaseData, server) {
 			res.end(JSON.stringify(result));
 		});
 	})
+
+	//###########################################################\\
+	//#						MESSAGE ROUTES						#\\
+	//###########################################################\\
+	server.post('/api/v1.0/messages', (req, res) => {
+        
+        let messageData = {
+			author: req.body['author'],
+			recipient: req.body['recipient'],
+			subject: req.body['subject'],
+			message: req.body['message'], 
+			dateAndTime: new Date()
+		};
+		
+        
+        message.add(databaseData, messageData, function (err, result){
+            
+            if(err){
+                res.status(400);
+                res.end("error:" + err);
+                return;
+            }
+            
+            res.status(201);	
+            res.end(JSON.stringify(result));
+        });
+    })
+	
+	server.get('/api/v1.0/messages/:recipient', (req, res) => {
+
+        let messageData = {
+            recipient : req.params.recipient
+        }
+
+        message.getByRecipent(databaseData, messageData, function (err, result){
+            
+            res.setHeader('content-type', 'application/json')
+            res.setHeader('accepts', 'GET')
+            
+            if(err){
+                res.status(400);
+                res.end("error:" + err);
+                return;
+            }
+            res.status(200);
+            res.end(JSON.stringify(result));
+        });
+    })
+
 
 	//###########################################################\\
 	//#					 !!!ADMIN ROUTES!!!						#\\
