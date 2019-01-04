@@ -48,8 +48,24 @@ exports.getAll = function(conData, advertData, callback){
 		
 		//QUERY
 		conn.query('SELECT * FROM adverts', function (err, result) {
-			callback(err, result);
-		});	
+			callback(err, result)
+		});
 			
-	});
-};
+	})
+}
+exports.deleteById = function(conData, advertData, callback){
+	
+	db.connect(conData, function(err, conn){
+		
+		if (err) {
+			callback(err);
+			return;
+		}	
+		
+		//QUERY
+		conn.query('DELETE FROM adverts WHERE id = ?', advertData.id, function (err, result) {
+			callback(err, result)
+		});
+			
+	})
+}

@@ -98,44 +98,77 @@ exports.allRoutes = function (databaseData, server) {
 	//#						ADVERT ROUTES						#\\
 	//###########################################################\\
 	server.post('/api/v1.0/adverts', upload.single('photo'), (req, res) => {
-		if(req.file === undefined || !req.file){
-			console.log('Please upload a file')
+		//console.log(req.file)
+
+		if (!req.body['title']) {
+			res.status(500)
+			console.log("No title provided")
+			res.end(JSON.stringify({ message: 'Please give your advert a title' }))
 		}
-		console.log(req.file)
-		const advertData = {
-			author: req.body['author'],
-			title: req.body['title'],
-			category: req.body['category'],
-			description: req.body['description'],
-			ItemCondition: req.body['ItemCondition'],
-			askingPrice: req.body['askingPrice'],
-			city: req.body['city'],
-			photo: 'http://localhost:8080/img/' + req.file.originalname
+		if (!req.body['category']) {
+			res.status(500)
+			console.log("No category provided")
+			res.end(JSON.stringify({ message: 'Please assign your advert to a category' }))
+		}
+		if (!req.body['description']) {
+			res.status(500)
+			console.log("No description provided")
+			res.end(JSON.stringify({ message: 'Please provide a description' }))
+		}
+		if (!req.body['ItemCondition']) {
+			res.status(500)
+			console.log("No Item Condition provided")
+			res.end(JSON.stringify({ message: 'Please provide a Item Condition' }))
+		}
+		if (!req.body['city']) {
+			res.status(500)
+			console.log("No city provided")
+			res.end(JSON.stringify({ message: 'Please provide a city' }))
+		}
+		if (req.file === undefined) {
+			res.status(500)
+			console.log('No photo uploaded')
+			res.end(JSON.stringify({ message: 'Please upload photo' }))
 		}
 
-		advert.uniqueTitleValidator(databaseData, advertData.title, (err) => {
-			if (err) {
-				res.status(400)
-				res.end(err.toString())
-				return
+		else {
+
+			let photoName = req.file.originalname
+			const advertData = {
+				author: req.body['author'],
+				title: req.body['title'],
+				category: req.body['category'],
+				description: req.body['description'],
+				ItemCondition: req.body['ItemCondition'],
+				askingPrice: req.body['askingPrice'],
+				city: req.body['city'],
+				photo: 'http://localhost:8080/img/' + photoName
 			}
-			else {
-				advert.add(databaseData, advertData, (err) => {
 
-					res.setHeader('content-type', 'application/json')
-					res.setHeader('accepts', 'GET, POST')
+			advert.uniqueTitleValidator(databaseData, advertData.title, (err) => {
+				if (err) {
+					res.status(400)
+					res.end(err.toString())
+					return
+				}
+				else {
+					advert.add(databaseData, advertData, (err) => {
 
-					if (err) {
-						res.status(400)
-						res.end('error:' + err)
-						return
-					}
+						res.setHeader('content-type', 'application/json')
+						res.setHeader('accepts', 'GET, POST')
 
-					res.status(201)
-					res.end(JSON.stringify({ message: 'advert added successfully' }))
-				})
-			}
-		})
+						if (err) {
+							res.status(400)
+							res.end('error:' + err)
+							return
+						}
+
+						res.status(201)
+						res.end(JSON.stringify({ message: 'advert added successfully' }))
+					})
+				}
+			})
+		}
 	})
 
 	server.get('/api/v1.0/adverts', (req, res) => {
@@ -157,53 +190,84 @@ exports.allRoutes = function (databaseData, server) {
 		});
 	})
 
+	server.delete('/api/v1.0/adverts/:id', (req, res) => {
+
+		let advertData = {
+			id: req.params.id
+		}
+
+		advert.deleteById(databaseData, advertData, function (err, result) {
+
+			if (err) {
+				res.status(400);
+				res.end("error:" + err);
+				return;
+			}
+			res.status(200);
+			res.end(JSON.stringify(result));
+		});
+
+	});
+
 	//###########################################################\\
 	//#						MESSAGE ROUTES						#\\
 	//###########################################################\\
 	server.post('/api/v1.0/messages', (req, res) => {
-        
-        let messageData = {
-			author: req.body['author'],
-			recipient: req.body['recipient'],
-			subject: req.body['subject'],
-			message: req.body['message'], 
-			dateAndTime: new Date()
-		};
-		
-        
-        message.add(databaseData, messageData, function (err, result){
-            
-            if(err){
-                res.status(400);
-                res.end("error:" + err);
-                return;
-            }
-            
-            res.status(201);	
-            res.end(JSON.stringify(result));
-        });
-    })
-	
+
+		if (!req.body['subject']) {
+			res.status(500)
+			console.log('Message SUBJECT unknown')
+			res.end(JSON.stringify({ message: 'Please choose a subject' }))
+		}
+		if (!req.body['message']) {
+			res.status(500)
+			console.log('Message unknown')
+			res.end(JSON.stringify({ message: 'Please write your message first' }))
+		}
+
+		else {
+			let messageData = {
+				author: req.body['author'],
+				recipient: req.body['recipient'],
+				subject: req.body['subject'],
+				message: req.body['message'],
+				dateAndTime: new Date()
+			};
+
+			message.add(databaseData, messageData, function (err, result) {
+
+				if (err) {
+					res.status(400);
+					res.end("error:" + err);
+					return;
+				}
+
+				res.status(201);
+				res.end(JSON.stringify(result));
+			})
+		}
+	})
+
 	server.get('/api/v1.0/messages/:recipient', (req, res) => {
 
-        let messageData = {
-            recipient : req.params.recipient
-        }
+		let messageData = {
+			recipient: req.params.recipient
+		}
 
-        message.getByRecipent(databaseData, messageData, function (err, result){
-            
-            res.setHeader('content-type', 'application/json')
-            res.setHeader('accepts', 'GET')
-            
-            if(err){
-                res.status(400);
-                res.end("error:" + err);
-                return;
-            }
-            res.status(200);
-            res.end(JSON.stringify(result));
-        });
-    })
+		message.getByRecipent(databaseData, messageData, function (err, result) {
+
+			res.setHeader('content-type', 'application/json')
+			res.setHeader('accepts', 'GET')
+
+			if (err) {
+				res.status(400);
+				res.end("error:" + err);
+				return;
+			}
+			res.status(200);
+			res.end(JSON.stringify(result));
+		});
+	})
 
 
 	//###########################################################\\
