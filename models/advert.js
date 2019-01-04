@@ -1,22 +1,22 @@
 'use strict'
-const db = require('../database');
+const db = require('../database')
 
 exports.add = function(conData, advertData, callback){
-	
-	db.connect(conData, function(err, conn){
+
+	db.connect(conData, (err, conn) => {
 
 		//error check
 		if (err) {
-			callback(err);
-			return;
-		}	
-		
+			callback(err)
+			return
+		}
+
 		//QUERY
-		conn.query('INSERT INTO adverts SET ?', advertData, function (err, result) {
-			callback(err, result);
-		});
-	});
-};
+		conn.query('INSERT INTO adverts SET ?', advertData, (err, result) => {
+			callback(err, result)
+		})
+	})
+}
 
 exports.uniqueTitleValidator = (conData, title, callback) => {
 	db.connect(conData, (err, conn) => {
@@ -38,34 +38,34 @@ exports.uniqueTitleValidator = (conData, title, callback) => {
 }
 
 exports.getAll = function(conData, advertData, callback){
-	
-	db.connect(conData, function(err, conn){
-		
+
+	db.connect(conData, (err, conn) => {
+
 		if (err) {
-			callback(err);
-			return;
-		}	
-		
+			callback(err)
+			return
+		}
+
 		//QUERY
-		conn.query('SELECT * FROM adverts', function (err, result) {
+		conn.query('SELECT * FROM adverts', (err, result) => {
 			callback(err, result)
-		});
-			
+		})
+
 	})
 }
 exports.deleteById = function(conData, advertData, callback){
-	
-	db.connect(conData, function(err, conn){
-		
+
+	db.connect(conData, (err, conn) => {
+
 		if (err) {
-			callback(err);
-			return;
-		}	
-		
+			callback(err)
+			return
+		}
+
 		//QUERY
-		conn.query('DELETE FROM adverts WHERE id = ?', advertData.id, function (err, result) {
+		conn.query('DELETE FROM adverts WHERE id = ?', advertData.id, (err, result) => {
 			callback(err, result)
-		});
-			
+		})
+
 	})
 }

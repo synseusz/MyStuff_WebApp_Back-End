@@ -5,16 +5,15 @@ const db = require('./database')
 const login = require('./models/loginTracking')
 const advert = require('./models/advert')
 const message = require('./models/message')
-const dump = require('./dumpData');
 //package for parsing files, in this case images.
 const multer = require('multer')
 
 const storage = multer.diskStorage({
-	destination: function (req, file, callback) {
+	destination: function(req, file, callback) {
 		callback(null, './public/img')
 	},
 
-	filename: function (req, file, callback) {
+	filename: function(req, file, callback) {
 		callback(null, file.originalname)
 	}
 })
@@ -25,7 +24,7 @@ const upload = multer({ storage: storage })
 /* eslint-disable no-magic-numbers */
 
 //Function for all routes
-exports.allRoutes = function (databaseData, server) {
+exports.allRoutes = function(databaseData, server) {
 
 
 	//###########################################################\\
@@ -43,8 +42,7 @@ exports.allRoutes = function (databaseData, server) {
 				res.status(400)
 				res.end(err.toString())
 				return
-			}
-			else {
+			} else {
 				user.add(databaseData, userData, (err) => {
 
 					res.setHeader('content-type', 'application/json')
@@ -102,38 +100,36 @@ exports.allRoutes = function (databaseData, server) {
 
 		if (!req.body['title']) {
 			res.status(500)
-			console.log("No title provided")
+			console.log('No title provided')
 			res.end(JSON.stringify({ message: 'Please give your advert a title' }))
 		}
 		if (!req.body['category']) {
 			res.status(500)
-			console.log("No category provided")
+			console.log('No category provided')
 			res.end(JSON.stringify({ message: 'Please assign your advert to a category' }))
 		}
 		if (!req.body['description']) {
 			res.status(500)
-			console.log("No description provided")
+			console.log('No description provided')
 			res.end(JSON.stringify({ message: 'Please provide a description' }))
 		}
 		if (!req.body['ItemCondition']) {
 			res.status(500)
-			console.log("No Item Condition provided")
+			console.log('No Item Condition provided')
 			res.end(JSON.stringify({ message: 'Please provide a Item Condition' }))
 		}
 		if (!req.body['city']) {
 			res.status(500)
-			console.log("No city provided")
+			console.log('No city provided')
 			res.end(JSON.stringify({ message: 'Please provide a city' }))
 		}
 		if (req.file === undefined) {
 			res.status(500)
 			console.log('No photo uploaded')
 			res.end(JSON.stringify({ message: 'Please upload photo' }))
-		}
+		} else {
 
-		else {
-
-			let photoName = req.file.originalname
+			const photoName = req.file.originalname
 			const advertData = {
 				author: req.body['author'],
 				title: req.body['title'],
@@ -150,8 +146,7 @@ exports.allRoutes = function (databaseData, server) {
 					res.status(400)
 					res.end(err.toString())
 					return
-				}
-				else {
+				} else {
 					advert.add(databaseData, advertData, (err) => {
 
 						res.setHeader('content-type', 'application/json')
@@ -173,41 +168,41 @@ exports.allRoutes = function (databaseData, server) {
 
 	server.get('/api/v1.0/adverts', (req, res) => {
 
-		let advertData = {}
+		const advertData = {}
 
-		advert.getAll(databaseData, advertData, function (err, result) {
+		advert.getAll(databaseData, advertData, (err, result) => {
 
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'GET')
 
 			if (err) {
-				res.status(400);
-				res.end("error:" + err);
-				return;
+				res.status(400)
+				res.end('error:' + err)
+				return
 			}
-			res.status(200);
-			res.end(JSON.stringify(result));
-		});
+			res.status(200)
+			res.end(JSON.stringify(result))
+		})
 	})
 
 	server.delete('/api/v1.0/adverts/:id', (req, res) => {
 
-		let advertData = {
+		const advertData = {
 			id: req.params.id
 		}
 
-		advert.deleteById(databaseData, advertData, function (err, result) {
+		advert.deleteById(databaseData, advertData, (err, result) => {
 
 			if (err) {
-				res.status(400);
-				res.end("error:" + err);
-				return;
+				res.status(400)
+				res.end('error:' + err)
+				return
 			}
-			res.status(200);
-			res.end(JSON.stringify(result));
-		});
+			res.status(200)
+			res.end(JSON.stringify(result))
+		})
 
-	});
+	})
 
 	//###########################################################\\
 	//#						MESSAGE ROUTES						#\\
@@ -223,50 +218,48 @@ exports.allRoutes = function (databaseData, server) {
 			res.status(500)
 			console.log('Message unknown')
 			res.end(JSON.stringify({ message: 'Please write your message first' }))
-		}
-
-		else {
-			let messageData = {
+		} else {
+			const messageData = {
 				author: req.body['author'],
 				recipient: req.body['recipient'],
 				subject: req.body['subject'],
 				message: req.body['message'],
 				dateAndTime: new Date()
-			};
+			}
 
-			message.add(databaseData, messageData, function (err, result) {
+			message.add(databaseData, messageData, (err, result) => {
 
 				if (err) {
-					res.status(400);
-					res.end("error:" + err);
-					return;
+					res.status(400)
+					res.end('error:' + err)
+					return
 				}
 
-				res.status(201);
-				res.end(JSON.stringify(result));
+				res.status(201)
+				res.end(JSON.stringify(result))
 			})
 		}
 	})
 
 	server.get('/api/v1.0/messages/:recipient', (req, res) => {
 
-		let messageData = {
+		const messageData = {
 			recipient: req.params.recipient
 		}
 
-		message.getByRecipent(databaseData, messageData, function (err, result) {
+		message.getByRecipent(databaseData, messageData, (err, result) => {
 
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'GET')
 
 			if (err) {
-				res.status(400);
-				res.end("error:" + err);
-				return;
+				res.status(400)
+				res.end('error:' + err)
+				return
 			}
-			res.status(200);
-			res.end(JSON.stringify(result));
-		});
+			res.status(200)
+			res.end(JSON.stringify(result))
+		})
 	})
 
 
@@ -285,15 +278,5 @@ exports.allRoutes = function (databaseData, server) {
 			res.end('tables were created successfully')
 		})
 	})
-
-	server.post('/api/v1.0/admin/addDumpData', (req, res) => {
-
-
-		//dump adverts data
-		dump.addAdverts(databaseData);
-
-		res.status(200);
-		res.end("dump data were added successfully");
-	});
 
 }
