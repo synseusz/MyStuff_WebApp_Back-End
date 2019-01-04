@@ -15,9 +15,10 @@ exports.add = function(conData, userData, callback){
 			callback(err)
 			return
 		}
-		
+
 		//paswd encryption
-		userData.password = bcrypt.hashSync(userData.password, 10)
+		const saltRounds = 10
+		userData.password = bcrypt.hashSync(userData.password, saltRounds)
 
 
 		//###~ QUERY ~###
