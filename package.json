@@ -4,7 +4,7 @@
   "description": "Backend API for 304CEM CW",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage --forceExit --detectOpenHandles",
     "start": "node server.js",
     "lint": "node_modules/.bin/eslint . --fix"
   },
@@ -26,5 +26,8 @@
     "API"
   ],
   "author": "Piotr Orlowski",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
 }
