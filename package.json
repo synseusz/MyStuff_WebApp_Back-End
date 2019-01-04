@@ -1,0 +1,30 @@
+{
+  "name": "backend-api",
+  "version": "0.3.0",
+  "description": "Backend API for 304CEM CW",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "lint": "node_modules/.bin/eslint . --fix"
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.1",
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "eslint": "^5.9.0",
+    "express": "^4.16.4",
+    "multer": "^1.4.1",
+    "mysql": "^2.16.0"
+  },
+  "keywords": [
+    "Piotr Orlowski",
+    "304CEM",
+    "CW",
+    "node.js",
+    "API"
+  ],
+  "author": "Piotr Orlowski",
+  "license": "MIT"
+}
