@@ -2,6 +2,13 @@
 //import mysql
 const mysql = require('mysql')
 
+/**
+ * Connect to the database
+ * @module connect
+ * @param  {Array} conData - Data needed to connect with DB such as host, user, password and database
+ * @param  {Function} callback - Callback to controlling module
+ */
+
 exports.connect = function(conData, callback){
 
 	const conn = mysql.createConnection({
@@ -15,6 +22,14 @@ exports.connect = function(conData, callback){
 		callback(null, conn)
 	})
 }
+
+/**
+ * Create tables in the database
+ * @module createTables
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Function} callback - Callback to controlling module
+ * @param  {String} sql - SQL querry
+ */
 
 exports.createTables = function(conData, callback){
 

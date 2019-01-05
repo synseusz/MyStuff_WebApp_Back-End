@@ -1,6 +1,6 @@
 'use strict'
 //db.connect test
-const db = require('../database')
+const db = require('../models/database')
 const connData = {
 	host: 'localhost',
 	user: 'root',

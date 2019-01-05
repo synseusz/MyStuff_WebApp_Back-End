@@ -1,9 +1,17 @@
 'use strict'
 
-const db = require('../database')
-const authentication = require('../authentication')
+const db = require('./database')
+const authentication = require('./authentication')
 
-exports.add = function(conData, req, callback){
+/**
+ * Log in user
+ * @module login
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Object} req - Server request
+ * @param  {Function} callback - Callback to controlling module
+ */
+
+exports.login = function(conData, req, callback){
 
 	authentication.userLogin(conData, req, (err, data) => {
 		//if an error occured return to the calling module

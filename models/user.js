@@ -1,10 +1,17 @@
 'use strict'
 
-const db = require('../database')
+const db = require('./database')
 const bcrypt = require('bcrypt')
 
-//this function is responsible for adding a new user
-exports.add = function(conData, userData, callback){
+
+/**
+ * Add a new user to the database
+ * @module addUser
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Array} userData - Stores email, password, registration date
+ * @param  {Function} callback - Callback to controlling module
+ */
+exports.addUser = function(conData, userData, callback){
 
 	//if pass validation connect to DB
 	db.connect(conData, (err, conn) => {
@@ -28,8 +35,14 @@ exports.add = function(conData, userData, callback){
 		})
 	})
 }
-
-exports.uniqueValidator = (conData, email, callback) => {
+/**
+ * Validates if email provided already exists in the database.
+ * @module uniqueEmailValidator
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {String} email - Email given
+ * @param  {Function} callback - Callback to controlling module
+ */
+exports.uniqueEmailValidator = (conData, email, callback) => {
 	db.connect(conData, (err, conn) => {
 		if (err) {
 			console.log('error in connecting to db:' + err)

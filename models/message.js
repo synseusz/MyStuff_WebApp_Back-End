@@ -1,7 +1,15 @@
 'use strict'
-const db = require('../database')
+const db = require('./database')
 
-exports.add = function(conData, messageData, callback){
+/**
+ * Add a new message to the database
+ * @module addMessage
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Array} messageData - Stores author, recipient, subject, message, date
+ * @param  {Function} callback - Callback to controlling module
+ */
+
+exports.addMessage = function(conData, messageData, callback){
 
 	db.connect(conData, (err, conn) => {
 
@@ -18,7 +26,15 @@ exports.add = function(conData, messageData, callback){
 	})
 }
 
-exports.getByRecipent = function(conData, messageData, callback){
+/**
+ * Get message from DB by specified recipient
+ * @module getMessageByRecipient
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Array} messageData - Stores recipient value from req.params
+ * @param  {Function} callback - Callback to controlling module
+ */
+
+exports.getMessageByRecipient = function(conData, messageData, callback){
 
 	db.connect(conData, (err, conn) => {
 

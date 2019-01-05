@@ -1,7 +1,7 @@
 'use strict'
 
 const user = require('./models/user')
-const db = require('./database')
+const db = require('./models/database')
 const login = require('./models/loginTracking')
 const advert = require('./models/advert')
 const message = require('./models/message')
@@ -37,13 +37,13 @@ exports.allRoutes = function(databaseData, server) {
 			password: req.body['password'],
 			registrationDate: new Date()
 		}
-		user.uniqueValidator(databaseData, userData.email, (err) => {
+		user.uniqueEmailValidator(databaseData, userData.email, (err) => {
 			if (err) {
 				res.status(400)
 				res.end(err.toString())
 				return
 			} else {
-				user.add(databaseData, userData, (err) => {
+				user.addUser(databaseData, userData, (err) => {
 
 					res.setHeader('content-type', 'application/json')
 					res.setHeader('accepts', 'GET, POST')
@@ -67,7 +67,7 @@ exports.allRoutes = function(databaseData, server) {
 	//###########################################################\\
 	server.post('/api/v1.0/login', (req, res) => {
 
-		login.add(databaseData, req, (err, data) => {
+		login.login(databaseData, req, (err, data) => {
 
 			res.setHeader('Access-Origin-Allow-Headers', ['Authorization'])
 			res.setHeader('content-type', 'application/json')
@@ -147,7 +147,7 @@ exports.allRoutes = function(databaseData, server) {
 					res.end(err.toString())
 					return
 				} else {
-					advert.add(databaseData, advertData, (err) => {
+					advert.addAdvert(databaseData, advertData, (err) => {
 
 						res.setHeader('content-type', 'application/json')
 						res.setHeader('accepts', 'GET, POST')
@@ -170,7 +170,7 @@ exports.allRoutes = function(databaseData, server) {
 
 		const advertData = {}
 
-		advert.getAll(databaseData, advertData, (err, result) => {
+		advert.getAllAdverts(databaseData, advertData, (err, result) => {
 
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'GET')
@@ -191,7 +191,7 @@ exports.allRoutes = function(databaseData, server) {
 			id: req.params.id
 		}
 
-		advert.deleteById(databaseData, advertData, (err, result) => {
+		advert.deleteAdvertById(databaseData, advertData, (err, result) => {
 
 			if (err) {
 				res.status(400)
@@ -227,7 +227,7 @@ exports.allRoutes = function(databaseData, server) {
 				dateAndTime: new Date()
 			}
 
-			message.add(databaseData, messageData, (err, result) => {
+			message.addMessage(databaseData, messageData, (err, result) => {
 
 				if (err) {
 					res.status(400)
@@ -247,7 +247,7 @@ exports.allRoutes = function(databaseData, server) {
 			recipient: req.params.recipient
 		}
 
-		message.getByRecipent(databaseData, messageData, (err, result) => {
+		message.getMessageByRecipient(databaseData, messageData, (err, result) => {
 
 			res.setHeader('content-type', 'application/json')
 			res.setHeader('accepts', 'GET')

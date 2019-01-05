@@ -12,9 +12,9 @@ const userData = {
 	registrationDate: new Date()
 }
 
-//user.add function test
+//user.addUser function test
 test('adding a new user', (done) => {
-	user.add(connData, userData, (err) => {
+	user.addUser(connData, userData, (err) => {
 		expect(err).toBeNull()
 		done()
 	})

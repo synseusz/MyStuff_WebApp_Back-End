@@ -1,5 +1,5 @@
 'use strict'
-//message.add test
+//message.addMessage test
 const message = require('../models/message')
 const connData = {
 	host: 'localhost',
@@ -16,18 +16,18 @@ const messageData = {
 }
 
 test('add new message', (done) => {
-	message.add(connData, messageData, (err) => {
+	message.addMessage(connData, messageData, (err) => {
 		expect(err).toBeNull()
 		done()
 	})
 }
 )
-//message.getByRecipient test
+//message.getMessageByRecipient test
 const messageData2 = {
 	recipient: 'test@test.com'
 }
 test('get message by recipient', (done) => {
-	message.getByRecipent(connData, messageData2, (err) => {
+	message.getMessageByRecipient(connData, messageData2, (err) => {
 		expect(err).toBeNull()
 		done()
 	})

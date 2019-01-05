@@ -4,6 +4,14 @@ const db = require('./database')
 const auth = require('basic-auth')
 const bcrypt = require('bcrypt')
 
+/**
+ * Authorization and Authentication of user
+ * @module userLogin
+ * @param  {Array} conData - Data needed to connect with DB
+ * @param  {Object} request - Server request
+ * @param  {Function} callback - Callback to controlling module
+ */
+
 exports.userLogin = (conData, request, callback) => {
 
 	//first check if basic authorization is present
