@@ -26,6 +26,10 @@ const upload = multer({ storage: storage })
 //Function for all routes
 exports.allRoutes = function(databaseData, server) {
 
+	// Status route
+	server.get('/status', (req, res) => {
+		res.send('My Stuff API Status: Active')
+	})
 
 	//###########################################################\\
 	//#						SIGN UP	ROUTE						#\\
@@ -96,34 +100,33 @@ exports.allRoutes = function(databaseData, server) {
 	//#						ADVERT ROUTES						#\\
 	//###########################################################\\
 	server.post('/api/v1.0/adverts', upload.single('photo'), (req, res) => {
-		//console.log(req.file)
 
 		if (!req.body['title']) {
 			res.status(500)
 			console.log('No title provided')
 			res.end(JSON.stringify({ message: 'Please give your advert a title' }))
 		}
-		if (!req.body['category']) {
+		else if (!req.body['category']) {
 			res.status(500)
 			console.log('No category provided')
 			res.end(JSON.stringify({ message: 'Please assign your advert to a category' }))
 		}
-		if (!req.body['description']) {
+		else if (!req.body['description']) {
 			res.status(500)
 			console.log('No description provided')
 			res.end(JSON.stringify({ message: 'Please provide a description' }))
 		}
-		if (!req.body['ItemCondition']) {
+		else if (!req.body['ItemCondition']) {
 			res.status(500)
 			console.log('No Item Condition provided')
 			res.end(JSON.stringify({ message: 'Please provide a Item Condition' }))
 		}
-		if (!req.body['city']) {
+		else if (!req.body['city']) {
 			res.status(500)
 			console.log('No city provided')
 			res.end(JSON.stringify({ message: 'Please provide a city' }))
 		}
-		if (req.file === undefined) {
+		else if (req.file === undefined) {
 			res.status(500)
 			console.log('No photo uploaded')
 			res.end(JSON.stringify({ message: 'Please upload photo' }))
@@ -138,8 +141,9 @@ exports.allRoutes = function(databaseData, server) {
 				ItemCondition: req.body['ItemCondition'],
 				askingPrice: req.body['askingPrice'],
 				city: req.body['city'],
-				photo: 'http://localhost:8080/img/' + photoName
+				photo: 'http://homepi.ddns.net:8080/img/' + photoName
 			}
+
 
 			advert.uniqueTitleValidator(databaseData, advertData.title, (err) => {
 				if (err) {
@@ -214,9 +218,9 @@ exports.allRoutes = function(databaseData, server) {
 			console.log('Message SUBJECT unknown')
 			res.end(JSON.stringify({ message: 'Please choose a subject' }))
 		}
-		if (!req.body['message']) {
+		else if (!req.body['message']) {
 			res.status(500)
-			console.log('Message unknown')
+			console.log('Message BODY unknown')
 			res.end(JSON.stringify({ message: 'Please write your message first' }))
 		} else {
 			const messageData = {

@@ -25,13 +25,14 @@ server.use(express.static('public'))
 
 //prepare our database connection parameters
 const databaseData = {
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'database'
-}
+ 	host: 'sql2.freemysqlhosting.net',
+ 	user: 'sql2345722',
+ 	password: 'jR8*iW3%',
+ 	database: 'sql2345722'
+ }
+
 //save server port on global variable
-const port = 8080
+const port = process.env.PORT || 8080
 
 //----- add all routes to the api end points ------
 routes.allRoutes(databaseData, server)

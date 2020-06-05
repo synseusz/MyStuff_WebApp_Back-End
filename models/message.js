@@ -21,6 +21,11 @@ exports.addMessage = function(conData, messageData, callback){
 
 		//QUERY
 		conn.query('INSERT INTO messages SET ?', messageData, (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			callback(err, result)
 		})
 	})
@@ -45,6 +50,11 @@ exports.getMessageByRecipient = function(conData, messageData, callback){
 
 		//QUERY
 		conn.query('SELECT * FROM messages WHERE recipient = ?', messageData.recipient, (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			callback(err, result)
 		})
 

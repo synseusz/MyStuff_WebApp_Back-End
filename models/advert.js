@@ -21,6 +21,11 @@ exports.addAdvert = function(conData, advertData, callback){
 
 		//QUERY
 		conn.query('INSERT INTO adverts SET ?', advertData, (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			callback(err, result)
 		})
 	})
@@ -43,6 +48,11 @@ exports.uniqueTitleValidator = (conData, title, callback) => {
 		}
 		conn.query('SELECT title FROM adverts', (err, result) => {
 			let n
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			for(n=0; n<result.length; n++){
 				if(result[n].title === title){
 					err = new Error('Advert with such title already exists in DB, try to pick another one')
@@ -72,6 +82,11 @@ exports.getAllAdverts = function(conData, advertData, callback){
 
 		//QUERY
 		conn.query('SELECT * FROM adverts', (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			callback(err, result)
 		})
 
@@ -97,6 +112,11 @@ exports.deleteAdvertById = function(conData, advertData, callback){
 
 		//QUERY
 		conn.query('DELETE FROM adverts WHERE id = ?', advertData.id, (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			callback(err, result)
 		})
 

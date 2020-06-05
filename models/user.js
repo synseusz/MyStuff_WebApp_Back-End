@@ -30,6 +30,11 @@ exports.addUser = function(conData, userData, callback){
 
 		//###~ QUERY ~###
 		conn.query('INSERT INTO users SET ?', userData, (err, result) => {
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			//return control to the calling module
 			callback(err, result)
 		})
@@ -51,6 +56,11 @@ exports.uniqueEmailValidator = (conData, email, callback) => {
 		}
 		conn.query('SELECT email FROM users', (err, result) => {
 			let n
+			if (err) {
+				console.log('error in executing the query')
+				callback(err)
+				return
+			}
 			for(n=0; n<result.length; n++){
 				if(result[n].email === email){
 					err = new Error('User already exists in DB')
