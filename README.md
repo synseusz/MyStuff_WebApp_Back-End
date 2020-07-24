@@ -1,3 +1,3 @@
-# 304CEM_Piotr_Orlowski_BACKEND
+# MY STUFF BACKEND
 
-This is Backend for my CW assignment
+RESTful MyStuff Web App API
