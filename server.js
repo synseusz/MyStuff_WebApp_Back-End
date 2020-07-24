@@ -25,10 +25,10 @@ server.use(express.static('public'))
 
 //prepare our database connection parameters
 const databaseData = {
- 	host: 'sql2.freemysqlhosting.net',
- 	user: 'sql2345722',
- 	password: 'jR8*iW3%',
- 	database: 'sql2345722'
+ 	host: process.env.HOST,
+ 	user: process.env.USER,
+ 	password: process.env.PASSWD,
+ 	database: process.env.USER
  }
 
 //save server port on global variable
