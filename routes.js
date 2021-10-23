@@ -141,7 +141,7 @@ exports.allRoutes = function(databaseData, server) {
 				ItemCondition: req.body['ItemCondition'],
 				askingPrice: req.body['askingPrice'],
 				city: req.body['city'],
-				photo: 'http://homepi.ddns.net:8080/img/' + photoName
+				photo: 'http://159.89.13.14:1337/img/' + photoName
 			}
 
 
