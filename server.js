@@ -8,9 +8,19 @@ const bodyParser = require('body-parser')
 
 const routes = require('./routes')
 
+const https = require('https');
+const fs = require('fs');
+
 //create the express module
 const server = express()
 
+const sslServer = https.createServer(
+ {
+ 	key: fs.readFileSync(process.env.SSL_KEY),
+	cert: fs.readFileSync(process.env.SSL_CERT)
+ },
+	server
+)
 //To parse json data
 server.use(bodyParser.json())
 
@@ -38,7 +48,7 @@ const port = process.env.PORT || 8080
 routes.allRoutes(databaseData, server)
 
 //start the server
-server.listen(port, err => {
+sslServer.listen(port, err => {
 	if (err) {
 		console.error(err)
 	} else {
@@ -46,3 +56,4 @@ server.listen(port, err => {
 
 	}
 })
+
