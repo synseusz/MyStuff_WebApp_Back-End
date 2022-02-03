@@ -14,13 +14,13 @@ const fs = require('fs');
 //create the express module
 const server = express()
 
-const sslServer = https.createServer(
- {
- 	key: fs.readFileSync(process.env.SSL_KEY),
-	cert: fs.readFileSync(process.env.SSL_CERT)
- },
-	server
-)
+// const sslServer = https.createServer(
+//  {
+//  	key: fs.readFileSync(process.env.SSL_KEY),
+// 	cert: fs.readFileSync(process.env.SSL_CERT)
+//  },
+// 	server
+// )
 //To parse json data
 server.use(bodyParser.json())
 
@@ -48,7 +48,7 @@ const port = process.env.PORT || 8080
 routes.allRoutes(databaseData, server)
 
 //start the server
-sslServer.listen(port, err => {
+server.listen(port, err => { //if SSL ready replace with sslServer var
 	if (err) {
 		console.error(err)
 	} else {
