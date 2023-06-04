@@ -14,13 +14,12 @@ const fs = require('fs');
 //create the express module
 const server = express()
 
-// const sslServer = https.createServer(
-//  {
-//  	key: fs.readFileSync(process.env.SSL_KEY),
-// 	cert: fs.readFileSync(process.env.SSL_CERT)
-//  },
-// 	server
-// )
+const options = {
+	key: fs.readFileSync(process.env.SSL_KEY),
+	cert: fs.readFileSync(process.env.SSL_CERT)
+};
+const sslServer = https.createServer(options, server);
+
 //To parse json data
 server.use(bodyParser.json())
 
@@ -35,11 +34,11 @@ server.use(express.static('public'))
 
 //prepare our database connection parameters
 const databaseData = {
- 	host: process.env.HOST,
- 	user: process.env.USER,
- 	password: process.env.PASSWD,
- 	database: process.env.DATABASE
- }
+	host: process.env.HOST,
+	user: process.env.USER,
+	password: process.env.PASSWD,
+	database: process.env.DATABASE
+}
 
 //save server port on global variable
 const port = process.env.PORT || 8080
@@ -48,12 +47,11 @@ const port = process.env.PORT || 8080
 routes.allRoutes(databaseData, server)
 
 //start the server
-server.listen(port, err => { //if SSL ready replace with sslServer var
+sslServer.listen(port, err => {
 	if (err) {
-		console.error(err)
+		console.error(err);
 	} else {
-		console.log(`App is ready on port ${port}`)
-
+		console.log(`App is ready on port ${port}`);
 	}
-})
+});
 
