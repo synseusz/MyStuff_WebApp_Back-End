@@ -1,6 +1,6 @@
 'use strict'
-//import mysql
-const mysql = require('mysql')
+//import mysql2
+const mysql = require('mysql2')
 
 /**
  * Connect to the database
@@ -9,18 +9,19 @@ const mysql = require('mysql')
  * @param  {Function} callback - Callback to controlling module
  */
 
-exports.connect = function(conData, callback){
+exports.connect = function (conData, callback) {
 
 	const conn = mysql.createConnection({
-		  host: conData.host,
-		  user: conData.user,
-		  password: conData.password,
-		  database: conData.database
+		host: conData.host,
+		user: conData.user,
+		password: conData.password,
+		database: conData.database
 	})
 	conn.connect((err) => {
 		if (err) callback(err)
 		callback(null, conn)
 	})
+
 }
 
 /**
@@ -31,14 +32,14 @@ exports.connect = function(conData, callback){
  * @param  {String} sql - SQL querry
  */
 
-exports.createTables = function(conData, callback){
+exports.createTables = function (conData, callback) {
 
 	const con = mysql.createConnection({
-		  multipleStatements: true,
-		  host: conData.host,
-		  user: conData.user,
-		  password: conData.password,
-		  database: conData.database
+		multipleStatements: true,
+		host: conData.host,
+		user: conData.user,
+		password: conData.password,
+		database: conData.database
 	})
 
 	let sql = 'CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT, email VARCHAR(32),'
@@ -48,8 +49,11 @@ exports.createTables = function(conData, callback){
 	sql += 'CREATE TABLE IF NOT EXISTS adverts (id INT NOT NULL AUTO_INCREMENT, author VARCHAR(100), title VARCHAR(200), category VARCHAR(100), description LONGTEXT, ItemCondition VARCHAR(100), askingPrice INT, city VARCHAR(30), photo VARCHAR(2048), PRIMARY KEY (id));'
 	sql += 'CREATE TABLE IF NOT EXISTS messages (id INT NOT NULL AUTO_INCREMENT, author VARCHAR(200), recipient VARCHAR(200), subject VARCHAR(200), message VARCHAR(2048), dateAndTime DATETIME, PRIMARY KEY (id));'
 
-	con.query(sql, (err, result) => {
-		callback(err, result)
-	})
-
+	con.promise().query(sql)
+		.then(([result]) => {
+			callback(null, result)
+		})
+		.catch(err => {
+			callback(err)
+		})
 }

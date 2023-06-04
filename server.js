@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 
 const routes = require('./routes')
 
-const https = require('https');
+//const https = require('https');
 const fs = require('fs');
 
 //create the express module
@@ -38,7 +38,7 @@ const databaseData = {
  	host: process.env.HOST,
  	user: process.env.USER,
  	password: process.env.PASSWD,
- 	database: process.env.USER
+ 	database: process.env.DATABASE
  }
 
 //save server port on global variable
